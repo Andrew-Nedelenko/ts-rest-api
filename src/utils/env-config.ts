@@ -4,4 +4,4 @@ import path from 'path';
 const root = path.join.bind(this, __dirname, '../../');
 dotenv.config({ path: root('.env') });
 
-export const port = process.env.PORT
+export const port = process.env.PORT;

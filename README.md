@@ -1,6 +1,5 @@
 ##### simple rest api with types
 
-####Todo:
--integrate eslint/pritier
+#### Todo:
 -add db without ORM
 -cors configuration 
