@@ -1,12 +1,10 @@
-import { Router, Request, Response } from 'express';
+import { Router } from 'express';
+import bodyParser from 'body-parser';
+import { createuser } from '../controllers/user-create';
+import { findUser } from '../controllers/user-find';
 
 export const router = Router();
 
-router.get('/', (req: Request, res: Response) => {
-  res.json({ hello: '1' });
-});
+router.post('/user/create', bodyParser.json(), createuser);
 
-router.get('/userid/:id', (req: Request, res: Response) => {
-  const { id } = req.params;
-  res.json({ id });
-});
+router.get('/user/:id', findUser);

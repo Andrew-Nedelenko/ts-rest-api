@@ -1,5 +1,7 @@
 ##### simple rest api with types
 
 #### Todo:
--add db without ORM
--cors configuration 
+-add types
+-middleware
+-bcryptjs for passwords
+-cors configuration
