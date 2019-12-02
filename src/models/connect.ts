@@ -11,7 +11,17 @@ export const connection = mysql.createConnection({
   password: dbpass,
 });
 
-connection.connect();
+const checkConnection = (): Promise<void> => new Promise((resolve) => {
+  connection.connect();
+  resolve();
+});
+
+checkConnection().then(() => {
+  global.console.log(chalk.blue('Database connection succesfully!'));
+}).catch((e) => {
+  throw new Error(e);
+});
+
 
 export const migration = async (): Promise<void> => {
   const table = connection.query('CREATE TABLE IF NOT EXISTS userAuth (id int(11) UNSIGNED NOT NULL AUTO_INCREMENT, username varchar(150), email varchar(200), password varchar(255), phone varchar(15), PRIMARY KEY (id), KEY (id));');
