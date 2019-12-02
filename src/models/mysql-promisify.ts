@@ -1,7 +1,8 @@
 import { connection } from './connect';
 
-export const promiseQuery = (dbQuery: string): Promise<void> => new Promise((resolve, reject) => {
-  connection.query(dbQuery, (err, result) => {
+// eslint-disable-next-line max-len
+export const promiseQuery = (dbQuery: string, args: Array<string | number>): Promise<void> => new Promise((resolve, reject) => {
+  connection.query(dbQuery, args || [], (err, result) => {
     if (err) {
       return reject();
     }
