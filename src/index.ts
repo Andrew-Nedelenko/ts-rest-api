@@ -7,7 +7,7 @@ import { port } from './utils/env-config';
 import { router } from './router/routes';
 import './models/connect';
 
-const app: Application = express();
+export const app: Application = express();
 
 if (process.env.NODE_ENV !== 'production') {
   app.use(logger('dev'));
