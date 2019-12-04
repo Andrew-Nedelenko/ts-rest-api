@@ -11,21 +11,25 @@ export const connection = mysql.createPool({
   password: dbpass,
 });
 
-const checkConnection = (): Promise<void> => new Promise((resolve) => {
-  connection.query('SELECT 1 + 1');
-  resolve();
+const checkConnection = (): Promise<{}> => new Promise((resolve, reject) => {
+  connection.query('SELECT 1 + 1', (err, result) => {
+    if (!err) {
+      return resolve(result);
+    }
+    return reject();
+  });
 });
 
 checkConnection().then(() => {
   global.console.log(chalk.blue('Database connection succesfully!'));
 }).catch((e) => {
-  throw new Error(e);
+  global.console.log(chalk.red(`Database connection error!\n${e}`));
 });
 
 
 export const migration = async (): Promise<void> => {
   // eslint-disable-next-line max-len
-  const table = connection.query('CREATE TABLE IF NOT EXISTS userAuth (id int(11) UNSIGNED NOT NULL AUTO_INCREMENT, username varchar(150), email varchar(200), phone varchar(15), password varchar(255), salt varchar(255), PRIMARY KEY (id), KEY (id));');
+  const table = connection.query('CREATE TABLE IF NOT EXISTS userAuth (id int(11) UNSIGNED NOT NULL AUTO_INCREMENT, username varchar(150), email varchar(200), phone varchar(15), password varchar(255), PRIMARY KEY (id), KEY (id));');
   return new Promise((resolve) => {
     if (table) {
       // eslint-disable-next-line no-console

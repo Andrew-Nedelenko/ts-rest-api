@@ -3,8 +3,9 @@
 > #### Todo:
 >
 > - add types
-> - middleware
-> - encrypt user passwords
 > - cors configuration
-> - token authentication
+> - token authentication (session or jwt)
+> - relation in database
 > - writing tests
+> - express nesting routes (optional)
+> - redis connect

@@ -6,7 +6,6 @@ import chalk from 'chalk';
 import { port } from './utils/env-config';
 import { router } from './router/routes';
 import './models/connect';
-import './utils/password-encrypt';
 
 export const app: Application = express();
 

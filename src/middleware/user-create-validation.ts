@@ -30,7 +30,7 @@ export const createUserValidation = async (req: Request, res: Response, next: Ne
     }
   }
   if (Object.keys(errors).length) {
-    res.status(400).json(errors);
+    res.status(409).json(errors);
   } else {
     next();
   }
