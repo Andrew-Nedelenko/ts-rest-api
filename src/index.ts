@@ -6,6 +6,7 @@ import chalk from 'chalk';
 import { port } from './utils/env-config';
 import { router } from './router/routes';
 import './models/connect';
+import './utils/password-encrypt';
 
 export const app: Application = express();
 
@@ -18,4 +19,4 @@ app
   .use(helmet())
   .use(router);
 
-app.listen(port, () => console.log(chalk.cyan(`Server listen on ${port}`)));
+app.listen(port, () => global.console.log(chalk.cyan(`Server listen on ${port}`)));

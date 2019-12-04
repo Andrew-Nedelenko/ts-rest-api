@@ -22,6 +22,7 @@ module.exports = {
   ],
   rules: {
     "import/prefer-default-export": 0,
+    "max-len": ["error", { "ignoreComments": true, "code": 200 }],
   },
   settings: {
     "import/resolver": {
