@@ -18,4 +18,5 @@ app
   .use(helmet())
   .use(router);
 
-app.listen(port, () => global.console.log(chalk.cyan(`Server listen on ${port}`)));
+// @ts-ignore
+app.listen(port, '192.168.7.39', () => global.console.log(chalk.cyan(`Server listen on ${port}`)));

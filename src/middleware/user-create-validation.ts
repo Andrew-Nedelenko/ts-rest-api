@@ -1,11 +1,25 @@
 import { Request, Response, NextFunction } from 'express';
 import { promiseQuery } from '../models/mysql-promisify';
 
+export interface CreateUserTypes {
+  username: string;
+  email: string;
+  password: string;
+  phone: string;
+}
+
+interface Errors {
+  username?: string;
+  password?: string;
+  email?: string;
+  phone?: string;
+}
+
 export const createUserValidation = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const {
     username, password, email, phone,
-  } = req.body;
-  const errors: {username?: string; password?: string; email?: string; phone?: string} = {};
+  }: CreateUserTypes = req.body;
+  const errors: Errors = {};
 
   if (!String(username).trim()) {
     errors.username = 'username is require';
