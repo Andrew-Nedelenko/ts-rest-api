@@ -5,7 +5,7 @@ import { app } from '../src/index';
 describe('Get user by id', () => {
   it('should get /user/:id', async () => {
     const res = await request(app).get('/user/1')
-      .set('X-Forwarded-For', '192.168.7.39');
+      .set('X-Forwarded-For', '192.168.0.106');
     expect(res.status).to.equal(200);
     expect(res.body).to.be.an('array');
   });
@@ -16,8 +16,8 @@ describe('Create user without error', () => {
     const res = await request(app).post('/user/create').send({
       username: 'john',
       password: '123456',
-      email: 'j2@j.com',
-      phone: '0992112222',
+      email: 'j3@j.com',
+      phone: '0992212222',
     })
       .type('application/json');
     expect(res.status).to.equal(409);
@@ -32,5 +32,17 @@ describe('Auth user with email, password', () => {
     })
       .type('application/json');
     expect(res.status).to.equal(200);
+  });
+});
+
+describe('Add new credential', () => {
+  it('should be status 200 or 208 if already exist', async () => {
+    const res = await request(app).post('/credentials/add').send({
+      ip: '192.168.0.106',
+      domain: 'testdomain',
+      project: 'testproject',
+    })
+      .type('application/json');
+    expect(res.status).to.equal(208);
   });
 });

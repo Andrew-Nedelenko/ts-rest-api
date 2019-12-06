@@ -9,10 +9,7 @@ export interface CreateUserTypes {
 }
 
 interface Errors {
-  username?: string;
-  password?: string;
-  email?: string;
-  phone?: string;
+  [key: string]: string;
 }
 
 export const createUserValidation = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
@@ -30,7 +27,7 @@ export const createUserValidation = async (req: Request, res: Response, next: Ne
   if (!(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/).test(String(email))) {
     errors.email = 'email is not valid';
   } else {
-    const checkEmail: Array<{}> = await promiseQuery('SELECT * FROM userAuth WHERE email = ?;', [email]);
+    const checkEmail: Errors[] = await promiseQuery('SELECT * FROM userAuth WHERE email = ?;', [email]);
     if (checkEmail.length > 0) {
       errors.email = 'email already exist';
     }
@@ -38,7 +35,7 @@ export const createUserValidation = async (req: Request, res: Response, next: Ne
   if (!(/((\+)?\b(8|38)?(0[\d]{2}))([\d-]{5,8})([\d]{2})/).test(phone)) {
     errors.phone = 'phone is not valid';
   } else {
-    const checkPhone: Array<{}> = await promiseQuery('SELECT * FROM userAuth WHERE phone = ?', [phone]);
+    const checkPhone: Errors[] = await promiseQuery('SELECT * FROM userAuth WHERE phone = ?', [phone]);
     if (checkPhone.length > 0) {
       errors.phone = 'phone already exist';
     }
