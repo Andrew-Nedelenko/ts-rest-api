@@ -9,5 +9,4 @@
 > - writing tests
 > - express nesting routes (optional)
 > - redis connect
-> - grant access from white list
 > - make usable migrations

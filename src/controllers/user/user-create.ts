@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import argon from 'argon2';
-import { promiseQuery } from '../models/mysql-promisify';
-import { CreateUserTypes } from '../middleware/user-create-validation';
+import { promiseQuery } from '../../models/mysql-promisify';
+import { CreateUserTypes } from '../../middleware/user-create-validation';
 
 export const createuser = async (req: Request, res: Response): Promise<void> => {
   const {

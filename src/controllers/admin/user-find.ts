@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { promiseQuery } from '../models/mysql-promisify';
+import { promiseQuery } from '../../models/mysql-promisify';
 
 
 export const findUser = async (req: Request, res: Response): Promise<void> => {

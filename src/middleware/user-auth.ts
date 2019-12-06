@@ -7,10 +7,15 @@ interface UserAuthParam{
   password: string;
 }
 
+type UserAuthDb = {
+  [key: string]: string;
+}
+
 export const userAuth = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const { email, password }: UserAuthParam = req.body;
   try {
-    const data: Array<{password: string; email: string}> = await promiseQuery('SELECT * FROM userAuth WHERE email = ?', [email]);
+    // @ts-ignore
+    const data: UserAuthDb[] = await promiseQuery('SELECT * FROM userAuth WHERE email = ?', [email]);
     if (data.length > 0) {
       const compare = await argon.verify(data[0].password, password);
       if (compare) {
