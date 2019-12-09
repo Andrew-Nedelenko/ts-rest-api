@@ -11,10 +11,13 @@ interface AllowCredentials {
   [key: string]: string | number;
 }
 
-export const addCredentials = async (req: Request, res: Response) => {
+export const addCredentials = async (req: Request, res: Response): Promise<void> => {
   const { ip, domain, project }: AddCredentialsTypes = req.body;
   try {
-    const allowCredentials: AllowCredentials[] = await promiseQuery('INSERT INTO credentialsClients (ip, domain, project, banned) VALUES (?, ?, ?, ?);', [ip, domain, project, 0]);
+    const allowCredentials: AllowCredentials[] = await promiseQuery(
+      'INSERT INTO credentialsClients (ip, domain, project, banned) VALUES (?, ?, ?, ?);',
+      [ip, domain, project, 0],
+    );
     res.send(allowCredentials);
   } catch (e) {
     res.status(208).send('Already allowed!');

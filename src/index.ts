@@ -19,4 +19,4 @@ app
   .use(router);
 
 // @ts-ignore
-app.listen(port, '192.168.0.106', () => global.console.log(chalk.cyan(`Server listen on ${port}`)));
+app.listen(port, '192.168.7.39', () => global.console.log(chalk.cyan(`Server listen on ${port}`)));
