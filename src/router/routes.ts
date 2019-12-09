@@ -3,7 +3,7 @@ import { json } from 'body-parser';
 import { accessControl } from '../middleware/check-credentials';
 import { createUserValidation } from '../middleware/user-create-validation';
 import { createuser } from '../controllers/user/user-create';
-import { findUser } from '../controllers/admin/user-find';
+import { findUser, paginateUsers } from '../controllers/admin/user-find';
 import { userAuth } from '../middleware/user-auth';
 import { userProfile } from '../controllers/user/user-profile';
 
@@ -18,4 +18,5 @@ router.post('/user/profile', json(), userProfile);
 
 /* admin routes */
 router.get('/user/:id', accessControl, findUser);
+router.get('/users/:limit?/:page', accessControl, paginateUsers);
 router.post('/credentials/add', accessControl, json(), addCredentials);
