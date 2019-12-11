@@ -1,4 +1,4 @@
-import mysql, { Query } from 'mysql';
+import mysql from 'mysql';
 import chalk from 'chalk';
 import {
   dbhost, dbname, dbpass, dbuser,
@@ -21,9 +21,9 @@ const checkConnection = (): Promise<{}> => new Promise((resolve, reject) => {
 });
 
 checkConnection().then(() => {
-  global.console.log(chalk.blue('Database connection succesfully!'));
+  global.console.log(chalk.blue('MySql connection succesfully!'));
 }).catch((e) => {
-  global.console.log(chalk.red(`Database connection error!\n${e}`));
+  global.console.log(chalk.red(`MySql connection error!\n${e}`));
 });
 
 

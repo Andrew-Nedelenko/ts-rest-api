@@ -38,7 +38,7 @@ describe('Create user without error', () => {
 
 describe('Auth user with email, password', () => {
   it('should be status 200', async () => {
-    const res = await request(app).post('/user/auth').send({
+    const res = await request(app).post('/user/login').send({
       email: staticEnv.email,
       password: '123456',
     })
