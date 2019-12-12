@@ -3,10 +3,11 @@ import logger from 'morgan';
 import helmet from 'helmet';
 import cors from 'cors';
 import chalk from 'chalk';
-import { port } from './utils/env-config';
+import { port, origin } from './utils/env-config';
 import { router } from './router/routes';
 import './models/connect';
 import './redis/connect';
+
 
 export const app: Application = express();
 
@@ -15,9 +16,12 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 app
-  .use(cors())
+  .use(cors({
+    credentials: true,
+    origin,
+  }))
   .use(helmet())
   .use(router);
 
-// @ts-ignore
-app.listen(port, '192.168.7.39', (): string => global.console.log(chalk.cyan(`Server listen on ${port}`)));
+
+app.listen(port, '192.168.7.39', (): void => global.console.log(chalk.cyan(`Server listen on ${port}`)));

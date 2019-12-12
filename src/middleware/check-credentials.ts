@@ -6,7 +6,7 @@ interface Credentials {
 }
 
 export const accessControl = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  const ip: any = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+  const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress as unknown as string;
   const checkAlowed: Credentials[] = await promiseQuery(
     'SELECT * FROM credentialsClients WHERE ip = ? HAVING banned = ?', [ip, 0],
   );
