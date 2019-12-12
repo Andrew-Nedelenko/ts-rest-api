@@ -6,4 +6,3 @@
 > - relation in database
 > - express nesting routes (optional)
 > - make usable migrations
-> - types resolve (remove all tsignore, change all any types)

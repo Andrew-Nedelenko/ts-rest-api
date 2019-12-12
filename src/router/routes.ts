@@ -14,7 +14,6 @@ export const router = Router();
 
 /* user routes */
 router.post('/user/create', json(), createUserValidation, createuser);
-// @ts-ignore
 router.post('/user/login', json(), userAuth, userLogin);
 router.post('/user/profile', json(), userProfile);
 

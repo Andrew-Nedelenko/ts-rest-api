@@ -1,4 +1,4 @@
-import express, { Application } from 'express';
+import express, { Express } from 'express';
 import logger from 'morgan';
 import helmet from 'helmet';
 import cors from 'cors';
@@ -9,7 +9,7 @@ import './models/connect';
 import './redis/connect';
 
 
-export const app: Application = express();
+export const app: Express = express();
 
 if (process.env.NODE_ENV !== 'production') {
   app.use(logger('dev'));

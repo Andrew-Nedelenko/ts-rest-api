@@ -1,7 +1,6 @@
-import { Response } from 'express';
-import { ExtendedRequest } from '../../middleware/user-auth';
+import { Request, Response } from 'express';
 
-export const userLogin = async (req: ExtendedRequest, res: Response): Promise<void> => {
+export const userLogin = async (req: Request, res: Response): Promise<void> => {
   res.send({
     email: req.body.email,
     id: req.locals[0].id,

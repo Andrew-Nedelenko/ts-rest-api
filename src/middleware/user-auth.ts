@@ -2,19 +2,23 @@ import { Request, Response, NextFunction } from 'express';
 import argon from 'argon2';
 import { promiseQuery } from '../models/mysql-promisify';
 
-export interface ExtendedRequest extends Request{
+export interface UserAuthRequestType{
   email: string;
   password: string;
-  locals: UserAuthDb[];
+}
+
+declare module 'express-serve-static-core' {
+  interface Request {
+      locals: UserAuthDb[];
+  }
 }
 
 type UserAuthDb = {
   [key: string]: string;
 }
 
-
-export const userAuth = async (req: ExtendedRequest, res: Response, next: NextFunction): Promise<void> => {
-  const { email, password }: ExtendedRequest = req.body;
+export const userAuth = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  const { email, password }: UserAuthRequestType = req.body;
   try {
     const data: UserAuthDb[] = await promiseQuery('SELECT * FROM userAuth WHERE email = ?', [email]);
     if (data.length > 0) {
