@@ -1,4 +1,5 @@
-import mysql, { Query } from 'mysql';
+/* eslint-disable max-len */
+import mysql from 'mysql';
 import chalk from 'chalk';
 import {
   dbhost, dbname, dbpass, dbuser,
@@ -28,16 +29,11 @@ checkConnection().then(() => {
 
 
 export const migration = async (): Promise<void> => {
-  // eslint-disable-next-line max-len
-  const userAuthTable = connection.query('CREATE TABLE IF NOT EXISTS userAuth (id int(11) UNSIGNED NOT NULL AUTO_INCREMENT, username varchar(150), email varchar(200), phone varchar(15), password varchar(255),createdAt DATETIME NOT NULL DEFAULT NOW(), updatedAt DATETIME NOT NULL DEFAULT NOW(), PRIMARY KEY (id), KEY (id));');
-  // eslint-disable-next-line max-len
-  const credentialsClients: Query = connection.query('CREATE TABLE IF NOT EXISTS credentialsClients (id int (11) UNSIGNED NOT NULL AUTO_INCREMENT, ip varchar(100) UNIQUE, domain varchar(255), project varchar(255), banned tinyint(1), createdAt DATETIME NOT NULL DEFAULT NOW(), updatedAt DATETIME NOT NULL DEFAULT NOW(), PRIMARY KEY (id), KEY (id));');
-  return new Promise((resolve) => {
-    if (credentialsClients) {
-      // eslint-disable-next-line no-console
-      console.log(chalk.magenta('SQL query'), chalk.blue(credentialsClients.sql));
-      resolve();
-    }
-  });
+  const create = await Promise.all([
+    connection.query('CREATE TABLE IF NOT EXISTS userAuth (id int(11) UNSIGNED NOT NULL AUTO_INCREMENT, username varchar(150), email varchar(200), phone varchar(15), password varchar(255),createdAt DATETIME NOT NULL DEFAULT NOW(), updatedAt DATETIME NOT NULL DEFAULT NOW(), PRIMARY KEY (id), KEY (id));'),
+    connection.query('CREATE TABLE IF NOT EXISTS credentialsClients (id int (11) UNSIGNED NOT NULL AUTO_INCREMENT, ip varchar(100) UNIQUE, domain varchar(255), project varchar(255), banned tinyint(1), createdAt DATETIME NOT NULL DEFAULT NOW(), updatedAt DATETIME NOT NULL DEFAULT NOW(), PRIMARY KEY (id), KEY (id));'),
+    connection.query('CREATE TABLE IF NOT EXISTS userPosts (id int(11) UNSIGNED NOT NULL AUTO_INCREMENT, avatar varchar(255), createdAt DATETIME NOT NULL DEFAULT NOW(), updatedAt DATETIME NOT NULL DEFAULT NOW(), PRIMARY KEY (id), FOREIGN KEY (id) REFERENCES userAuth (id));'),
+  ]);
+  create.map((item) => global.console.info(`${chalk.blue(item.sql)}\n`));
 };
 migration().catch((e) => { throw new Error(e); });

@@ -61,7 +61,7 @@ describe('Add new credential', () => {
 });
 
 describe('Paginate users', () => {
-  it('sould be status 200', async () => {
+  it('should be status 200', async () => {
     const res = await request(app).get('/users/5/1')
       .set('X-Forwarded-For', staticEnv.ip)
       .type('application/json');

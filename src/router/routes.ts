@@ -7,7 +7,6 @@ import { findUser, paginateUsers } from '../controllers/admin/user-find';
 import { userAuth } from '../middleware/user-auth';
 import { userLogin } from '../controllers/user/user-login';
 import { userProfile } from '../controllers/user/user-profile';
-
 import { addCredentials } from '../controllers/admin/add-credentaials';
 
 export const router = Router();
