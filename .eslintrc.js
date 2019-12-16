@@ -23,6 +23,7 @@ module.exports = {
   rules: {
     "import/prefer-default-export": 0,
     "max-len": ["error", { "ignoreComments": true, "code": 120 }],
+    "import/extensions": [1, { "extensions": [".ts", ".tsx"] }],
   },
   settings: {
     "import/resolver": {
