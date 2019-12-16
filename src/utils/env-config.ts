@@ -11,4 +11,5 @@ export const dbuser = process.env.DBUSER;
 export const dbpass = process.env.DBPASS;
 export const redisPort: number | undefined = process.env.REDISPORT as number | undefined;
 export const redisHost = process.env.REDISHOST;
+export const accessTokenLife: number = process.env.EXPIREACCESSTOKEN as unknown as number;
 export const origin = process.env.ORIGIN;

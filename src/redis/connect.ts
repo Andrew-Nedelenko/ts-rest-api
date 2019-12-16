@@ -2,7 +2,7 @@ import { Tedis } from 'tedis';
 import chalk from 'chalk';
 import { redisPort, redisHost } from '../utils/env-config';
 
-const tedis = new Tedis({
+export const tedis = new Tedis({
   port: redisPort,
   host: redisHost,
 });

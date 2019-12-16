@@ -2,5 +2,10 @@
 
 > #### Todo:
 >
-> - token authentication (session or jwt) / create user login route > send cookie save in redis > auth with that cookie check token in redis, after every request chahge token to refresh token on client and redis
+> - token authentication:
+> - refresh token expires
+> - resolving access for 5 device (now 1)
+> - fingerprint optimize to many if
+> - remove all any types
+> - write test for userprofile auth with token
 > - express nesting routes (optional)

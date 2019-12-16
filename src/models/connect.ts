@@ -36,4 +36,4 @@ export const migration = async (): Promise<void> => {
   ]);
   create.map((item) => global.console.info(`${chalk.blue(item.sql)}\n`));
 };
-migration().catch((e) => { throw new Error(e); });
+// migration().catch((e) => { throw new Error(e); });

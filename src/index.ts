@@ -7,6 +7,7 @@ import { port, origin } from './utils/env-config';
 import { router } from './router/routes';
 import './models/connect';
 import './redis/connect';
+import './utils/token-generate';
 
 
 export const app: Express = express();
