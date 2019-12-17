@@ -4,6 +4,8 @@ export interface UserFingerprintTypes {
     accessToken: string;
     refreshToken: string;
     ban: string;
+    username?: string;
+    email?: string;
 }
 
 export const FingerprintCompare = (

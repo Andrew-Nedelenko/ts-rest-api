@@ -16,13 +16,14 @@ export const userLogin = async (req: Request, res: Response): Promise<void> => {
       accessToken,
       refreshToken,
       username: localData.username,
-      email: req.body.email,
+      email: req.body.email as string,
       ban: 0,
-      expires: Date.now() + accessTokenLife,
+      expires: Date.now(),
     });
     await tedis.expire(localData.id, accessTokenLife);
-    res.cookie('sid', accessToken, { expires: new Date(Date.now() + accessTokenLife), httpOnly: true });
-    res.cookie('sid:sing', refreshToken, { expires: new Date(Date.now() + accessTokenLife), httpOnly: true });
+
+    res.cookie('sid', accessToken, { expires: (new Date(Date.now() + accessTokenLife)), httpOnly: true });
+    res.cookie('sid:sing', refreshToken, { expires: (new Date(Date.now() + accessTokenLife)), httpOnly: true });
     res.send({
       email: req.body.email,
       id: localData.id,
