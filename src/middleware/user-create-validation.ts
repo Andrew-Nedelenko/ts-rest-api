@@ -24,6 +24,7 @@ export const createUserValidation = async (req: Request, res: Response, next: Ne
   if (!String(password).trim()) {
     errors.password = 'password is require';
   }
+  // eslint-disable-next-line max-len
   if (!(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
     .test(String(email))) {
     errors.email = 'email is not valid';

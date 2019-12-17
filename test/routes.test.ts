@@ -47,6 +47,14 @@ describe('Auth user with email, password', () => {
   });
 });
 
+describe('Get authorized user profile', () => {
+  it('should be status 200', async () => {
+    const res = await request(app).get('/user/profile');
+    expect(res.status).to.equal(200);
+  });
+});
+
+
 describe('Add new credential', () => {
   it('should be status 200 or 208 if already exist', async () => {
     const res = await request(app).post('/credentials/add').send({

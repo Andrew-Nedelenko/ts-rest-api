@@ -2,18 +2,21 @@ import { Request, Response, NextFunction } from 'express';
 import { tedis } from '../redis/connect';
 import { extractUserId } from '../utils/token-generate';
 import { accessTokenLife } from '../utils/env-config';
+import { FingerprintCompare, userFingerprint } from '../utils/fingerprint-compare';
 
 
 export const checkAuth = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
   const userId = extractUserId(req.cookies.sid);
   const {
-    userAgent, accessToken, refreshToken, ip, ban,
+    ip, userAgent, accessToken, refreshToken, ban,
   } = await tedis.hgetall(userId);
-  if (userAgent === req.headers['user-agent']
-    && accessToken === req.cookies.sid
-    && refreshToken === req.cookies['sid:sing']
-    && ip === req.connection.remoteAddress
-    && ban === '0') {
+  const userRequestData = userFingerprint(
+      req.connection.remoteAddress as string,
+      req.headers['user-agent'] as string,
+      req.cookies.sid, req.cookies['sid:sing'], '0',
+  );
+  const dbRequestData = userFingerprint(ip, userAgent, accessToken, refreshToken, ban);
+  if (FingerprintCompare(userRequestData, dbRequestData)) {
     await tedis.expire(userId, accessTokenLife);
     return next();
   }
