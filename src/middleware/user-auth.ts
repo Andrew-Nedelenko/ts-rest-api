@@ -9,11 +9,11 @@ export interface UserAuthRequestType{
 
 declare module 'express-serve-static-core' {
   interface Request {
-      locals: UserAuthDb[];
+      locals: UserAuthDb[] | {};
   }
 }
 
-type UserAuthDb = {
+export type UserAuthDb = {
   [key: string]: string;
 }
 

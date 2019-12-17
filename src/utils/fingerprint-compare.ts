@@ -1,4 +1,4 @@
-interface UserFingerprintTypes {
+export interface UserFingerprintTypes {
     ip: string;
     userAgent: string;
     accessToken: string;
@@ -12,7 +12,7 @@ export const FingerprintCompare = (
 ): boolean => JSON.stringify(userIncom) === JSON.stringify(dbData);
 
 
-export const userFingerprint = (
+export const fingerprinting = (
   ip: string,
   userAgent: string,
   accessToken: string,
