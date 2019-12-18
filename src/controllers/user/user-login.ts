@@ -10,7 +10,8 @@ export const userLogin = async (req: Request, res: Response): Promise<void> => {
     const [localData] = req.locals;
     const accessToken = generateAccessToken(localData.id);
     const refreshToken = uuid();
-    await tedis.hmset(localData.id, {
+    const userRedisId = `${localData.id}@${refreshToken}`;
+    await tedis.hmset(userRedisId, {
       ip: req.connection.remoteAddress as string,
       userAgent: req.headers['user-agent'] as string,
       accessToken,
@@ -18,15 +19,15 @@ export const userLogin = async (req: Request, res: Response): Promise<void> => {
       username: localData.username,
       email: req.body.email as string,
       ban: 0,
-      expires: Date.now(),
+      lastVisit: Date.now(),
     });
-    await tedis.expire(localData.id, accessTokenLife);
+    await tedis.expire(userRedisId, accessTokenLife);
 
     res.cookie('sid', accessToken, { expires: (new Date(Date.now() + accessTokenLife)), httpOnly: true });
     res.cookie('sid:sing', refreshToken, { expires: (new Date(Date.now() + accessTokenLife)), httpOnly: true });
     res.send({
       email: req.body.email,
-      id: localData.id,
+      id: userRedisId,
       status: 200,
       token: generateAccessToken(localData.id),
     });

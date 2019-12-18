@@ -6,9 +6,10 @@ import { FingerprintCompare, fingerprinting, UserFingerprintTypes } from '../uti
 
 export const checkAuth = async (req: Request, res: Response, next: NextFunction): Promise<void | Response> => {
   const userId: string = extractUserId(req.cookies.sid);
+  const userRedisId = `${userId}@${req.cookies['sid:sing']}`;
   const {
     ip, userAgent, accessToken, refreshToken, ban, username, email,
-  } = await tedis.hgetall(userId);
+  } = await tedis.hgetall(userRedisId);
 
   const checkBannedToken: number = parseFloat(ban);
   if (checkBannedToken > 0) {

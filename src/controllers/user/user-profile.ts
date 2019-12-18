@@ -6,12 +6,15 @@ import { accessTokenLife } from '../../utils/env-config';
 import { tedis } from '../../redis/connect';
 
 export const userProfile = async (req: Request, res: Response): Promise<void> => {
-  const { accessToken, email, username } = req.locals as UserAuthDb;
+  const {
+    accessToken, refreshToken, email, username,
+  } = req.locals as UserAuthDb;
   const getUserId: string = extractUserId(accessToken);
   const newAccessToken: string = generateAccessToken(getUserId);
   const newRefreshToken: string = uuid();
+  const userRedisId = `${getUserId}@${newRefreshToken}`;
   try {
-    await tedis.hmset(getUserId, {
+    await tedis.hmset(userRedisId, {
       ip: req.connection.remoteAddress as string,
       userAgent: req.headers['user-agent'] as string,
       accessToken: newAccessToken,
@@ -19,9 +22,10 @@ export const userProfile = async (req: Request, res: Response): Promise<void> =>
       username,
       email,
       ban: 0,
-      expires: Date.now() + accessTokenLife,
+      lastVisit: Date.now(),
     });
-    await tedis.expire(getUserId, accessTokenLife);
+    await tedis.expire(userRedisId, accessTokenLife);
+    await tedis.del(`${getUserId}@${refreshToken}`);
     res.cookie('sid', newAccessToken, { expires: new Date(Date.now() + accessTokenLife), httpOnly: true });
     res.cookie('sid:sing', newRefreshToken, { expires: new Date(Date.now() + accessTokenLife), httpOnly: true });
     res.json({
