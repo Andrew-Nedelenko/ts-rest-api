@@ -1,7 +1,9 @@
 import { Request, Response } from 'express';
 import uuid from 'uuid/v4';
 import { tedis } from '../../redis/connect';
-import { generateAccessToken } from '../../utils/token-generate';
+import { dataRedis } from '../../redis/object-redis';
+import { cookieSettings } from '../../utils/cookies.config';
+import { generateAccessToken, base64encode } from '../../utils/token-generate';
 import { accessTokenLife } from '../../utils/env-config';
 
 
@@ -9,22 +11,15 @@ export const userLogin = async (req: Request, res: Response): Promise<void> => {
   try {
     const [localData] = req.locals;
     const accessToken = generateAccessToken(localData.id);
-    const refreshToken = uuid();
-    const userRedisId = `${localData.id}@${refreshToken}`;
-    await tedis.hmset(userRedisId, {
-      ip: req.connection.remoteAddress as string,
-      userAgent: req.headers['user-agent'] as string,
-      accessToken,
-      refreshToken,
-      username: localData.username,
-      email: req.body.email as string,
-      ban: 0,
-      lastVisit: Date.now(),
-    });
+    const refreshToken = base64encode(req.headers['user-agent'] as string);
+    const userRedisId = `${localData.id}@${base64encode(req.headers['user-agent'] as string)}`;
+    await tedis.hmset(userRedisId, dataRedis(req.connection.remoteAddress as string,
+      req.headers['user-agent'] as string, accessToken, refreshToken,
+      localData.username, localData.email, localData.ban));
     await tedis.expire(userRedisId, accessTokenLife);
 
-    res.cookie('sid', accessToken, { expires: (new Date(Date.now() + accessTokenLife)), httpOnly: true });
-    res.cookie('sid:sing', refreshToken, { expires: (new Date(Date.now() + accessTokenLife)), httpOnly: true });
+    res.cookie('sid', accessToken, cookieSettings());
+    res.cookie('sid:sing', refreshToken, cookieSettings());
     res.send({
       email: req.body.email,
       id: userRedisId,

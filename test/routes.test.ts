@@ -10,8 +10,8 @@ interface StaticEnvType {
 
 const staticEnv: StaticEnvType = {
   ip: '192.168.7.39',
-  email: 'j1@j.com',
-  phone: '0992222222',
+  email: 'j10@j.com',
+  phone: '0999322222',
 };
 
 describe('Get user by id', () => {

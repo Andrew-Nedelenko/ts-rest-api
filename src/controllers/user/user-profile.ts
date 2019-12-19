@@ -1,33 +1,29 @@
 import { Request, Response } from 'express';
 import uuid from 'uuid/v4';
 import { UserAuthDb } from '../../middleware/user-auth';
-import { generateAccessToken, extractUserId } from '../../utils/token-generate';
+import { cookieSettings } from '../../utils/cookies.config';
+import { generateAccessToken, extractUserId, base64encode } from '../../utils/token-generate';
 import { accessTokenLife } from '../../utils/env-config';
 import { tedis } from '../../redis/connect';
+import { dataRedis } from '../../redis/object-redis';
 
 export const userProfile = async (req: Request, res: Response): Promise<void> => {
   const {
-    accessToken, refreshToken, email, username,
+    accessToken, refreshToken, email, username, ban,
   } = req.locals as UserAuthDb;
   const getUserId: string = extractUserId(accessToken);
   const newAccessToken: string = generateAccessToken(getUserId);
-  const newRefreshToken: string = uuid();
+  const newRefreshToken: string = base64encode(req.headers['user-agent'] as string);
   const userRedisId = `${getUserId}@${newRefreshToken}`;
+
   try {
-    await tedis.hmset(userRedisId, {
-      ip: req.connection.remoteAddress as string,
-      userAgent: req.headers['user-agent'] as string,
-      accessToken: newAccessToken,
-      refreshToken: newRefreshToken,
-      username,
-      email,
-      ban: 0,
-      lastVisit: Date.now(),
-    });
+    await tedis.hmset(userRedisId, dataRedis(req.connection.remoteAddress as string,
+      req.headers['user-agent'] as string, newAccessToken, newRefreshToken, username, email, ban));
     await tedis.expire(userRedisId, accessTokenLife);
-    await tedis.del(`${getUserId}@${refreshToken}`);
-    res.cookie('sid', newAccessToken, { expires: new Date(Date.now() + accessTokenLife), httpOnly: true });
-    res.cookie('sid:sing', newRefreshToken, { expires: new Date(Date.now() + accessTokenLife), httpOnly: true });
+    // await tedis.del(`${getUserId}@${refreshToken}`);
+
+    res.cookie('sid', newAccessToken, cookieSettings());
+    res.cookie('sid:sing', newRefreshToken, cookieSettings());
     res.json({
       newAccessToken,
       newRefreshToken,

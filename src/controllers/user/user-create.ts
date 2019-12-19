@@ -9,8 +9,8 @@ export const createuser = async (req: Request, res: Response): Promise<void> => 
   }: CreateUserTypes = req.body;
   try {
     const hash = await argon.hash(password);
-    const data = await promiseQuery('INSERT INTO userAuth (username, email, phone, password) VALUES (?, ?, ?, ?);',
-      [username, email.toLowerCase(), phone, hash]);
+    const data = await promiseQuery('INSERT INTO userAuth (username, email, phone, password, ban) VALUES (?, ?, ?, ?, ?);',
+      [username, email.toLowerCase(), phone, hash, 0]);
     res.status(201).send(data);
   } catch (e) {
     res.status(400).send('Error in database');
