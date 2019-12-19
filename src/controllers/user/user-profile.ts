@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-import uuid from 'uuid/v4';
 import { UserAuthDb } from '../../middleware/user-auth';
 import { cookieSettings } from '../../utils/cookies.config';
 import { generateAccessToken, extractUserId, base64encode } from '../../utils/token-generate';
@@ -9,7 +8,7 @@ import { dataRedis } from '../../redis/object-redis';
 
 export const userProfile = async (req: Request, res: Response): Promise<void> => {
   const {
-    accessToken, refreshToken, email, username, ban,
+    accessToken, email, username, ban,
   } = req.locals as UserAuthDb;
   const getUserId: string = extractUserId(accessToken);
   const newAccessToken: string = generateAccessToken(getUserId);
@@ -20,7 +19,6 @@ export const userProfile = async (req: Request, res: Response): Promise<void> =>
     await tedis.hmset(userRedisId, dataRedis(req.connection.remoteAddress as string,
       req.headers['user-agent'] as string, newAccessToken, newRefreshToken, username, email, ban));
     await tedis.expire(userRedisId, accessTokenLife);
-    // await tedis.del(`${getUserId}@${refreshToken}`);
 
     res.cookie('sid', newAccessToken, cookieSettings());
     res.cookie('sid:sing', newRefreshToken, cookieSettings());

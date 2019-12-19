@@ -13,6 +13,10 @@ export const generateAccessToken = (userId: string): string => {
 
 
 export const extractUserId = (token: string): string => {
-  const extacting = token.split('/')[1];
-  return extacting;
+  try {
+    const extacting = token.split('/')[1];
+    return extacting;
+  } catch (e) {
+    return '';
+  }
 };

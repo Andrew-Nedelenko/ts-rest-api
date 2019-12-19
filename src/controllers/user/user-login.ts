@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-import uuid from 'uuid/v4';
 import { tedis } from '../../redis/connect';
 import { dataRedis } from '../../redis/object-redis';
 import { cookieSettings } from '../../utils/cookies.config';
