@@ -4,9 +4,7 @@ import helmet from 'helmet';
 import cors from 'cors';
 import chalk from 'chalk';
 import { port, origin } from './utils/env-config';
-import { router } from './router/routes';
-import './models/connect';
-import './redis/connect';
+import './models/Database';
 
 
 export const app: Express = express();
@@ -21,7 +19,7 @@ app
     origin,
   }))
   .use(helmet())
-  .use(router);
+  .use('/', (req, res) => { res.send('ok'); });
 
 
-app.listen(port, '192.168.7.39', (): void => global.console.log(chalk.cyan(`Server listen on ${port}`)));
+app.listen(port, (): void => global.console.log(chalk.cyan(`Server listen on ${port}`)));
