@@ -3,7 +3,7 @@ import {
   dbhost, dbname, dbpass, dbuser,
 } from '../utils/env-config';
 
-export class Database {
+class Database {
   private readonly db: string = dbname as string;
 
   private readonly host: string = dbhost as string;
@@ -12,7 +12,7 @@ export class Database {
 
   private readonly password: string = dbpass as string;
 
-  connection(): Pool {
+  private connection(): Pool {
     return mysql.createPool({
       host: this.host,
       database: this.db,
@@ -21,7 +21,7 @@ export class Database {
     });
   }
 
-  promiseQuery <T>(query: string, args: Array<string | number>): Promise<T> {
+  promiseQuery<T>(query: string, args: Array<string | number>): Promise<T> {
     return new Promise((res, rej) => {
       const conn = this.connection();
       conn.query(query, args, (err, result) => {
@@ -33,3 +33,5 @@ export class Database {
     });
   }
 }
+
+export default new Database();

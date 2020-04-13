@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { promiseQuery } from '../models/mysql-promisify';
+import db from '../models/Database';
 
 interface Credentials {
   [key: string]: string | number;
@@ -7,8 +7,8 @@ interface Credentials {
 
 export const accessControl = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress as unknown as string;
-  const checkAlowed: Credentials[] = await promiseQuery(
-    'SELECT * FROM credentialsClients WHERE ip = ? HAVING banned = ?', [ip, 0],
+  const checkAlowed: Credentials[] = await db.promiseQuery(
+    'SELECT * FROM credentialsClients WHERE ip = ? HAVING banned = ?', [ip as string, 0],
   );
   if (checkAlowed.length > 0) {
     next();

@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { promiseQuery } from '../models/mysql-promisify';
+import db from '../models/Database';
 
 export interface CreateUserTypes {
   username: string;
@@ -29,7 +29,7 @@ export const createUserValidation = async (req: Request, res: Response, next: Ne
     .test(String(email))) {
     errors.email = 'email is not valid';
   } else {
-    const checkEmail: Errors[] = await promiseQuery('SELECT * FROM userAuth WHERE email = ?;', [email]);
+    const checkEmail: Errors[] = await db.promiseQuery('SELECT * FROM userAuth WHERE email = ?;', [email]);
     if (checkEmail.length > 0) {
       errors.email = 'email already exist';
     }
@@ -37,7 +37,7 @@ export const createUserValidation = async (req: Request, res: Response, next: Ne
   if (!(/((\+)?\b(8|38)?(0[\d]{2}))([\d-]{5,8})([\d]{2})/).test(phone)) {
     errors.phone = 'phone is not valid';
   } else {
-    const checkPhone: Errors[] = await promiseQuery('SELECT * FROM userAuth WHERE phone = ?', [phone]);
+    const checkPhone: Errors[] = await db.promiseQuery('SELECT * FROM userAuth WHERE phone = ?', [phone]);
     if (checkPhone.length > 0) {
       errors.phone = 'phone already exist';
     }

@@ -9,8 +9,15 @@
     "start": "NODE_ENV='production' node ./dist/index.js",
     "test:dev": "nodemon --watch . --ext ts --exec \"mocha -r ts-node/register test/**/*.test.ts\""
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "typescript",
+    "rest",
+    "api",
+    "express",
+    "mysql",
+    "redis"
+  ],
+  "author": "Synacten",
   "license": "ISC",
   "devDependencies": {
     "@types/body-parser": "^1.19.0",
