@@ -3,7 +3,7 @@ import { tedis } from '../../redis/connect';
 import { dataRedis } from '../../redis/object-redis';
 import { cookieSettings } from '../../utils/cookies.config';
 import { generateAccessToken, base64encode } from '../../utils/token-generate';
-import { accessTokenLife } from '../../utils/env-config';
+import { accessTokenLife } from '../../config/env-config';
 
 
 export const userLogin = async (req: Request, res: Response): Promise<void> => {

@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { UserAuthDb } from '../../middleware/user-auth';
 import { cookieSettings } from '../../utils/cookies.config';
 import { generateAccessToken, extractUserId, base64encode } from '../../utils/token-generate';
-import { accessTokenLife } from '../../utils/env-config';
+import { accessTokenLife } from '../../config/env-config';
 import { tedis } from '../../redis/connect';
 import { dataRedis } from '../../redis/object-redis';
 

@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import dotenv from 'dotenv';
 import {
   port, dbname, dbhost, dbpass, dbuser,
-} from '../src/utils/env-config';
+} from '../src/config/env-config';
 
 dotenv.config();
 

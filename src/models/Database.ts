@@ -1,7 +1,7 @@
 import mysql, { Pool } from 'mysql';
 import {
   dbhost, dbname, dbpass, dbuser,
-} from '../utils/env-config';
+} from '../config/env-config';
 
 class Database {
   private readonly db: string = dbname as string;
