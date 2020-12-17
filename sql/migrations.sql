@@ -27,3 +27,7 @@
     updatedAt DATETIME NOT NULL DEFAULT NOW(), 
     PRIMARY KEY (id), 
     FOREIGN KEY (id) REFERENCES userAuth (id));
+
+    INSERT INTO 
+        userAuth (username, email, phone, password, ban) 
+        VALUES (john, johndoe@gmail.com, +380501112222, 12345, 0);

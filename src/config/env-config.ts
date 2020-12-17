@@ -13,3 +13,4 @@ export const redisPort: number | undefined = process.env.REDISPORT as number | u
 export const redisHost = process.env.REDISHOST;
 export const accessTokenLife: number = process.env.EXPIREACCESSTOKEN as unknown as number;
 export const origin = process.env.ORIGIN;
+export const tokenSecret = process.env.TOKEN_SECRET as string;

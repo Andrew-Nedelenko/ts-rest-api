@@ -9,7 +9,7 @@ export interface UserAuthRequestType{
 
 declare module 'express-serve-static-core' {
   interface Request {
-      locals: UserAuthDb[] | {};
+      locals: any;
   }
 }
 
@@ -20,7 +20,8 @@ export type UserAuthDb = {
 export const userAuth = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const { email, password }: UserAuthRequestType = req.body;
   try {
-    const data: UserAuthDb[] = await db.promiseQuery('SELECT * FROM userAuth WHERE email = ?', [email]);
+    const data: UserAuthDb[] = await db.promiseQuery(`
+    SELECT * FROM userAuth WHERE email = ?`, [email]);
     if (data.length > 0) {
       const compare: boolean = await argon.verify(data[0].password, password);
       if (compare) {
