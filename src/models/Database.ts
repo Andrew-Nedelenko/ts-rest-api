@@ -1,16 +1,16 @@
 import mysql, { Pool } from 'mysql';
 import {
-  dbhost, dbname, dbpass, dbuser,
+  env,
 } from '../config/env-config';
 
 class Database {
-  private readonly db: string = dbname as string;
+  private readonly db: string = env('DBNAME');
 
-  private readonly host: string = dbhost as string;
+  private readonly host: string = env('DBHOST');
 
-  private readonly username: string = dbuser as string;
+  private readonly username: string = env('DBUSER');
 
-  private readonly password: string = dbpass as string;
+  private readonly password: string = env('DBPASS');
 
   private connection(): Pool {
     return mysql.createPool({

@@ -1,16 +1,22 @@
 import dotenv from 'dotenv';
-import path from 'path';
+import { join } from 'path';
+import { red } from 'chalk';
 
-const root = path.join.bind(this, __dirname, '../../');
-dotenv.config({ path: root('.env') });
+class Env {
+    private readonly root = join.bind(this, __dirname, '../../env');
 
-export const port: number = process.env.PORT as unknown as number;
-export const dbname = process.env.DBNAME;
-export const dbhost = process.env.DBHOST;
-export const dbuser = process.env.DBUSER;
-export const dbpass = process.env.DBPASS;
-export const redisPort: number | undefined = process.env.REDISPORT as number | undefined;
-export const redisHost = process.env.REDISHOST;
-export const accessTokenLife: number = process.env.EXPIREACCESSTOKEN as unknown as number;
-export const origin = process.env.ORIGIN;
-export const tokenSecret = process.env.TOKEN_SECRET as string;
+    private readonly process = process.env;
+
+    constructor() {
+      dotenv.config({ path: this.root(process.env.NODE_ENV === 'production' ? '.env.prod' : '.env.dev') });
+    }
+
+    getEnv(en: string): string {
+      if (typeof this.process[en] === 'undefined') {
+        throw new Error(red(`${en} equals ${typeof process.env[en]}!`));
+      }
+      return this.process[en] as string;
+    }
+}
+
+export const env = (variable: string): string => new Env().getEnv(variable);

@@ -1,10 +1,10 @@
 import { Tedis } from 'tedis';
 import chalk from 'chalk';
-import { redisPort, redisHost } from '../config/env-config';
+import { env } from '../config/env-config';
 
 export const tedis = new Tedis({
-  port: redisPort,
-  host: redisHost,
+  port: parseFloat(env('REDISPORT')),
+  host: env('REDISHOST'),
 });
 
 const checkRedisConnetion = async (query: string): Promise<void> => {

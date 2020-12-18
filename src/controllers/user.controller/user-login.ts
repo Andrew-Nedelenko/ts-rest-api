@@ -3,7 +3,6 @@ import { tedis } from '../../redis/connect';
 import { dataRedis } from '../../redis/object-redis';
 import { cookieSettings } from '../../utils/cookies.config';
 import { generateAccessToken, base64encode } from '../../utils/token-generate';
-import { accessTokenLife } from '../../config/env-config';
 
 
 export const userLogin = async (req: Request, res: Response): Promise<void> => {
@@ -15,7 +14,7 @@ export const userLogin = async (req: Request, res: Response): Promise<void> => {
     await tedis.hmset(userRedisId, dataRedis(req.connection.remoteAddress as string,
       req.headers['user-agent'] as string, accessToken, refreshToken,
       localData.username, localData.email, localData.ban));
-    await tedis.expire(userRedisId, accessTokenLife);
+    await tedis.expire(userRedisId, 172800);
 
     res.cookie('sid', accessToken, cookieSettings());
     res.cookie('sid:sing', refreshToken, cookieSettings());

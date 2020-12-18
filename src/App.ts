@@ -4,6 +4,7 @@ import helmet from 'helmet';
 import cors from 'cors';
 import { userRouter } from './router/user.routes';
 import { adminRouter } from './router/admin.routes';
+import { env } from './config/env-config';
 
 class App {
   private readonly app: Express;
@@ -24,7 +25,7 @@ class App {
       .use(
         cors({
           credentials: true,
-          origin: [],
+          origin: env('ORIGIN'),
         }),
       )
       .use('/user', userRouter)
