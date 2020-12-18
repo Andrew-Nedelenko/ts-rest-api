@@ -5,7 +5,7 @@ export const generateJWTAccessToken = (
   username: string,
   id: number,
 ): string => jwt.sign({ username, id }, env('TOKENSECRET'), {
-  expiresIn: 172800, // 48 hours
+  expiresIn: env('EXPIREACCESSTOKEN'),
 });
 
 export const verifyJWTtoken = (token: string): string | boolean => {

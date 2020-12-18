@@ -28,10 +28,10 @@ export const userAuth = async (req: Request, res: Response, next: NextFunction):
         req.locals = data;
         next();
       } else {
-        res.status(401).json({ error: 'wrong email or password1' });
+        res.status(401).json({ error: 'wrong email or password!' });
       }
     } else {
-      res.status(401).json({ error: 'wrong email or password2' });
+      res.status(401).json({ error: 'wrong email or password!' });
     }
   } catch (e) {
     res.status(400).send(`Error in database ${e}`);
